@@ -2,17 +2,16 @@
 #AutoIt3Wrapper_Icon=internet.ico
 #AutoIt3Wrapper_Res_Comment=Written By Jacob Stewart
 #AutoIt3Wrapper_Res_Description=Logs internet ping to an output log file.
-#AutoIt3Wrapper_Res_Fileversion=1.0.0.1
-#AutoIt3Wrapper_Res_Fileversion_AutoIncrement=y
+#AutoIt3Wrapper_Res_Fileversion=1.1.0.1
 #AutoIt3Wrapper_Res_ProductName=Internet uptime logging
-#AutoIt3Wrapper_Res_ProductVersion=1.0.0.0
+#AutoIt3Wrapper_Res_ProductVersion=1.1.0.1
 #AutoIt3Wrapper_Res_CompanyName=Internet uptime logging
 #AutoIt3Wrapper_Res_LegalCopyright=Internet uptime logging
 #AutoIt3Wrapper_Res_LegalTradeMarks=Internet uptime logging
 #EndRegion ;**** Directives created by AutoIt3Wrapper_GUI ****
-Global $Version='1.1.0.0'
+Global $Version='1.1.0.1'
 #cs - Version Log
-1.1.0.0 and above see GitHub
+1.1.0.0+ and above see GitHub
 -
 1.0.0.0
 logs internet ping to www.google.com and writes a log when log is clicked
@@ -35,7 +34,7 @@ $TrayExit=TrayCreateItem("Exit")
 
 ;timers
 Global $timer_runningTime=TimerInit()
-Global $timer_LogOut-TimerInit()
+Global $timer_LogOut=TimerInit()
 Global $timer=TimerInit()
 
 ;ping vars
@@ -67,7 +66,7 @@ While 1
 	EndIf
 
 	If TimerDiff($timer_LogOut)>600000 Then
-		$timer_LogOut-TimerInit()
+		$timer_LogOut=TimerInit()
 		_Log(0)
 	EndIf
 
