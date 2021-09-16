@@ -2,14 +2,14 @@
 #AutoIt3Wrapper_Icon=internet.ico
 #AutoIt3Wrapper_Res_Comment=Written By Jacob Stewart
 #AutoIt3Wrapper_Res_Description=Logs internet ping to an output log file.
-#AutoIt3Wrapper_Res_Fileversion=1.1.0.1
+#AutoIt3Wrapper_Res_Fileversion=1.2.0.0
 #AutoIt3Wrapper_Res_ProductName=Internet uptime logging
-#AutoIt3Wrapper_Res_ProductVersion=1.1.0.1
+#AutoIt3Wrapper_Res_ProductVersion=1.2.0.0
 #AutoIt3Wrapper_Res_CompanyName=Internet uptime logging
 #AutoIt3Wrapper_Res_LegalCopyright=Internet uptime logging
 #AutoIt3Wrapper_Res_LegalTradeMarks=Internet uptime logging
 #EndRegion ;**** Directives created by AutoIt3Wrapper_GUI ****
-Global $Version='1.1.0.1'
+Global $Version='1.2.0.0'
 #cs - Version Log
 1.1.0.0+ and above see GitHub
 -
@@ -24,11 +24,12 @@ logs internet ping to www.google.com and writes a log when log is clicked
 
 ;File Setup
 Global $File_Log=@ScriptDir&"\internet_log.log"
-_FileWriteLog($File_Log,'--- New Log ---',1)
+_FileWriteLog($File_Log,'---------------------------------- Program Started ----------------------------------',1)
 
 ;Tray setup
 Opt("TrayMenuMode", 3)
 $TrayLog=TrayCreateItem("Log")
+$trayOpenLog=TrayCreateItem("Open Log")
 $TrayAbout=TrayCreateItem("About")
 $TrayExit=TrayCreateItem("Exit")
 
@@ -47,11 +48,15 @@ Global $pingCount=0
 While 1
 	Switch TrayGetMsg()
 		Case $TrayExit
+			_Log(0)
+			_FileWriteLog($File_Log,'---------------------------------- Program Stop ----------------------------------',1)
 			Exit
 		Case $TrayAbout
 			MsgBox(0,"About","Program Version: "&$Version&@CRLF&"Program written by Jacob Stewart")
 		Case $TrayLog
 			_Log(1)
+		Case $trayOpenLog
+			ShellExecute($File_Log)
 	EndSwitch
 
 	If TimerDiff($timer)>1000 Then
@@ -78,6 +83,7 @@ WEnd
 Func _Log($_Log_msg)
 	$LogOut="Program has been running for: "&Round(TimerDiff($timer_runningTime)/1000/60,1)&"min ("&Round(TimerDiff($timer_runningTime)/1000/60/60,2)&" hours)"&@CRLF& _
 	$pingCount&" Pings."&@CRLF&$pingSuccess&" | Successful Pings."&@CRLF&$pingFail&" | Failed Pings."&@CRLF&"Up percentage | "&$pingSuccess/$pingCount*100
+	_FileWriteLog($File_Log,'-----------',1)
 	_FileWriteLog($File_Log,$LogOut,1)
 	If $_Log_msg=1 Then	ShellExecute($File_Log)
 EndFunc
